@@ -9,7 +9,7 @@
 import UIKit
 import ARKit
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
 
     @IBOutlet weak var sceneView: ARSCNView!
     
@@ -34,32 +34,32 @@ class ViewController: UIViewController {
     }
     
     //MARK: - Add Cube
-    private func addCube() {
-        let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0.0)
-        
-        
-        let boxNode = SCNNode()
-        boxNode.geometry = box
-        boxNode.position = SCNVector3(0,0,-0.6) // position relative to camera (X, Y, Z)
-        
-        // X = neg left < - > pos right
-        // Y = neg doqwn < - > pos up
-        // Z = neg forwards < - > pos backwards or away
     
-        let scene = SCNScene()
-        scene.rootNode.addChildNode(boxNode)
-        sceneView.scene = scene
-        }
+    /// position relative to camera (X, Y, Z)
+    /// params:
+    /// x = neg left < - > pos right
+    /// y = neg doqwn < - > pos up
+    /// z = neg forwards < - > pos backwards or away
+    
+    private func addCube(x: Float = 0, y: Float = 0, z: Float = -0.5) {
+        let cube = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0.0)
+        
+        let cubeNode = SCNNode()
+        cubeNode.geometry = cube
+        cubeNode.position = SCNVector3(x, y, z)
+    
+        sceneView.scene.rootNode.addChildNode(cubeNode)
+    }
     
     //MARK: - GestureRecognizers
     
     private func addTapGestureRecognizerToSceneView() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap(withGestureRecognizer:)))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.didTap(withGestureRecognizer:)))
         sceneView.addGestureRecognizer(tapGestureRecognizer)
     }
     
     private func removeTapGestureRecognizerFromSceneView() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap(withGestureRecognizer:)))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.didTap(withGestureRecognizer:)))
         sceneView.removeGestureRecognizer(tapGestureRecognizer)
     }
     
@@ -67,10 +67,17 @@ class ViewController: UIViewController {
         let tapLocation = recognizer.location(in: sceneView)
         let hitTestResults = sceneView.hitTest(tapLocation)
         
-        guard let node = hitTestResults.first?.node else { return }
+        guard let node = hitTestResults.first?.node else {
+            let hitTestResultWithFeaturePoints = sceneView.hitTest(tapLocation, types: .featurePoint)
+            if let hitTestResultWithFirstFeaturePoint = hitTestResultWithFeaturePoints.first {
+                let translation = hitTestResultWithFirstFeaturePoint.worldTransform.translation
+                addCube(x: translation.x, y: translation.y, z: translation.z)
+            }
+            
+         return
+        }
         node.removeFromParentNode()
     }
-    
 }
 
 extension float4x4 {

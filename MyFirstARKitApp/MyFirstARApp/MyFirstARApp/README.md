@@ -35,7 +35,10 @@ Basically here we just setup Xcode and reviewed what AR kit is and how it works.
 
 #### Adding Gesture Recognizer to the ARSCNView 
 
-
+1. Code was refactored 
+2. Added extension for the float3 object.. 
+3. Refactored the addCube function
+4. Refactored the didTap function
 
 
 
