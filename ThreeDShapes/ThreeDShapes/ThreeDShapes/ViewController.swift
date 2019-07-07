@@ -151,13 +151,24 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
-    
     fileprivate func setupGestureRecognizers() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(insertShapeFrom(gestureRecognizer:)))
         tapGestureRecognizer.numberOfTapsRequired = 1
+        
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(changeShapeColorWith(gestureRecognizer:)))
+        longPressGestureRecognizer.minimumPressDuration = 0.5
+        
         sceneView.addGestureRecognizer(tapGestureRecognizer)
+        sceneView.addGestureRecognizer(longPressGestureRecognizer)
+        
     }
     
+    //MARK: - Lighting Effects
+    
+    fileprivate func setupLighting() {
+        sceneView.autoenablesDefaultLighting = true
+        sceneView.automaticallyUpdatesLighting = true
+    }
     
     // MARK: - ShapeManagement
     
@@ -182,14 +193,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
-    fileprivate func changeShapeColorWith(gestureRecognizer recognizer: UILongPressGestureRecognizer) {
+    @objc fileprivate func changeShapeColorWith(gestureRecognizer recognizer: UILongPressGestureRecognizer) {
         let touchLocation = recognizer.location(in: sceneView)
-        let hits = sceneView.hitTest(touchLocation, types: .existingPlaneUsingExtent)
+        let hits = sceneView.hitTest(touchLocation)
         
         if !hits.isEmpty, let firstHit = hits.first {
-            
+            let firstNode = firstHit.node
+            guard shapeNodes.contains(firstNode) else { return }
+            firstNode.geometry?.firstMaterial?.diffuse.contents = UIColor.randomColor()
         }
-        
     }
     
     // MARK: - Setup
@@ -207,6 +219,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         setupLabel()
         addShape()
+        setupLighting()
         
         sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
     }
