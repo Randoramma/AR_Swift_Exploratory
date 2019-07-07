@@ -20,5 +20,9 @@
 5. Updated setupScene with debugging options. 
 
 
+### Random Colored Shapes and Lighting
+1. Created extension file 
+2. Created extensions for UIColor, CGFloat, and float4x4
+
 
 
