@@ -15,6 +15,8 @@
 		D0EF686D22CF86110082CF7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0EF686B22CF86110082CF7F /* LaunchScreen.storyboard */; };
 		D0EF687522D0DC610082CF7F /* ShapeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EF687422D0DC610082CF7F /* ShapeFactory.swift */; };
 		D0EF687822D0EAF80082CF7F /* VirtualPlane.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EF687722D0EAF80082CF7F /* VirtualPlane.swift */; };
+		D0EF687A22D1058E0082CF7F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EF687922D1058E0082CF7F /* Extensions.swift */; };
+		D0EF687C22D22B390082CF7F /* SessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EF687B22D22B390082CF7F /* SessionState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +31,8 @@
 		D0EF687422D0DC610082CF7F /* ShapeFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeFactory.swift; sourceTree = "<group>"; };
 		D0EF687622D0E77C0082CF7F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D0EF687722D0EAF80082CF7F /* VirtualPlane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualPlane.swift; sourceTree = "<group>"; };
+		D0EF687922D1058E0082CF7F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		D0EF687B22D22B390082CF7F /* SessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,8 +68,10 @@
 				D0EF686022CF86100082CF7F /* AppDelegate.swift */,
 				D0EF686222CF86100082CF7F /* art.scnassets */,
 				D0EF686422CF86100082CF7F /* ViewController.swift */,
+				D0EF687B22D22B390082CF7F /* SessionState.swift */,
 				D0EF687722D0EAF80082CF7F /* VirtualPlane.swift */,
 				D0EF687622D0E77C0082CF7F /* README.md */,
+				D0EF687922D1058E0082CF7F /* Extensions.swift */,
 				D0EF687422D0DC610082CF7F /* ShapeFactory.swift */,
 				D0EF686622CF86100082CF7F /* Main.storyboard */,
 				D0EF686922CF86110082CF7F /* Assets.xcassets */,
@@ -147,6 +153,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0EF687C22D22B390082CF7F /* SessionState.swift in Sources */,
+				D0EF687A22D1058E0082CF7F /* Extensions.swift in Sources */,
 				D0EF687822D0EAF80082CF7F /* VirtualPlane.swift in Sources */,
 				D0EF687522D0DC610082CF7F /* ShapeFactory.swift in Sources */,
 				D0EF686522CF86100082CF7F /* ViewController.swift in Sources */,
