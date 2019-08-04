@@ -11,20 +11,27 @@ import ARKit
 
 class Scene: SKScene {
     
+    static let REAL_WORLD_DIMENSION_IN_METERS = 2
     
     var sceneView: ARSKView {
         return view as! ARSKView
     }
     
     var worldFirstSetup = false
+    
     override func didMove(to view: SKView) {
         sight = SKSpriteNode(imageNamed: "crosshair")
         addChild(sight)
+        
+        srand48(Int(Date.timeIntervalSinceReferenceDate))
     }
     
     var sight: SKSpriteNode!
     
+    let gameSize = CGSize(width: REAL_WORLD_DIMENSION_IN_METERS,
+                          height: REAL_WORLD_DIMENSION_IN_METERS)
     
+    var hitCount = 0
     
     override func update(_ currentTime: TimeInterval) {
         if !worldFirstSetup {
@@ -65,20 +72,44 @@ class Scene: SKScene {
         
         print("We fired.")
         run(Sounds.fire)
+        
+        if let hitMonster = hitMonster,
+            let anchor = sceneView.anchor(for: hitMonster) {
+            let action = SKAction.run {
+                self.sceneView.session.remove(anchor: anchor)
+            }
+            let group = SKAction.group([Sounds.hit, action])
+            let sequence = [SKAction.wait(forDuration: 0.3), group]
+            hitMonster.run(SKAction.sequence(sequence))
+            
+            hitCount += 1
+            
+            if hitCount == 3 {
+                hitCount = 0
+                setupWorld()
+            }
+        }
     }
     
     //MARK: - Setup World when game is loaded
     func setupWorld() {
-        guard let currentFrame = sceneView.session.currentFrame else { return }
+        guard let currentFrame = sceneView.session.currentFrame, let scene = SKScene(fileNamed: "Scene") else { return }
         
-        var translation = matrix_identity_float4x4 // create identity matrix
-        translation.columns.3.z = -0.3 // create translation matrix
-        let transform = currentFrame.camera.transform * translation // update translation matrix with transform
-        
-        let anchor = ARAnchor(transform: transform) // create anchor using transform matrix
-        sceneView.session.add(anchor: anchor) // add anchor to scene triggering delegate method.
-            
-            
+        for node in scene.children {
+            if let node = node as? SKSpriteNode {
+                var translation = matrix_identity_float4x4
+                
+                let positionX = node.position.x / scene.size.width
+                let positionY = node.position.y / scene.size.height
+                
+                translation.columns.3.x = Float(positionX * gameSize.width)
+                translation.columns.3.z = Float(positionY * gameSize.height)
+                translation.columns.3.y = -Float(drand48() - 0.5) // the drand value with offset allows a height value to be randomly generated somewhere between 0.5m above or below the device.
+                let transform = currentFrame.camera.transform * translation
+                let anchor = ARAnchor(transform: transform)
+                sceneView.session.add(anchor: anchor) // add anchor to scene triggering delegate method.
+            }
+        }
         worldFirstSetup = true
     }
     

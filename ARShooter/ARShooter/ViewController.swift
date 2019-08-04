@@ -70,6 +70,7 @@ class ViewController: UIViewController, ARSKViewDelegate {
     
     func view(_ view: ARSKView, nodeFor anchor: ARAnchor) -> SKNode? {
         let monster = SKSpriteNode(imageNamed: "monster")
+        monster.name = "monster"
         return monster
     }
     
